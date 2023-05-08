@@ -3,7 +3,7 @@ import UserMatchHistory from "./UserMatchHistory";
 import { ObjectId } from 'mongodb';
 import UserInventory from './UserInventory';
 import UserFriendManager from './UserFriendManager';
-import Database from '../Database';
+import Database from '../../Database';
 
 export default class User {
 
@@ -13,6 +13,8 @@ export default class User {
     username: string;
     password: string;
     createdAt: number = Date.now();
+
+    party?: string;
 
     //@nested(()=>UserMatchHistory)
     matchHistory: UserMatchHistory = new UserMatchHistory();
@@ -30,12 +32,18 @@ export default class User {
         await Database.saveUser(this);
     }
 
-    connect(){
+    async connect(){
         this.connected = true;
+        await this.save();
     }
 
-    disconnect(){
+    async disconnect(){
         this.connected = false;
+        await this.save();
+    }
+
+    getID(){
+        return this.id.toString();
     }
 
 }

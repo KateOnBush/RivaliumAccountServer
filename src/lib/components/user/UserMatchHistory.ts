@@ -1,5 +1,5 @@
-import Database from "../Database";
-import Match from "./match/Match";
+import Database from "../../Database";
+import Match from "../match/Match";
 
 export default class UserMatchHistory {
 

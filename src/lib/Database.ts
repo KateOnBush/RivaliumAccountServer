@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import Match from './components/match/Match';
-import User from './components/User';
+import User from './components/user/User';
 
 import { passwordSaltRounds, 
     usernameRegex, 
@@ -19,6 +19,10 @@ let UserRepository = new Repository<User>(User, DatabaseClient, "account", { dat
 let MatchRepository = new Repository<Match>(Match, DatabaseClient, "match", { databaseName: "epicgame" });
 
 export default class Database {
+
+    static async getAll() {
+        return await UserRepository.find({}).toArray();
+    }
 
     static async fetchUser(id: string) {
 
@@ -41,7 +45,7 @@ export default class Database {
 
     static async registerUser(name: string, password: string) {
 
-        console.log(await this.findUserId(name) )
+        console.log(await this.findUserId(name))
 
         if (await this.findUserId(name) != null) throw "Username already taken.";
 
