@@ -3,6 +3,7 @@ export const passwordSaltRounds = 10;
 
 export const usernameRegex = /^[A-Za-z_-]{5,16}$/;
 export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,30}$/;
+export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 export const databasePath = "mongodb://127.0.0.1:27017";
 
@@ -11,3 +12,5 @@ export const apiPort = 8080;
 
 export const usernameRequirementMessage = "Username must be between 5 and 16 characters long, must include only characters, numbers, underscore and hyphen.";
 export const passwordRequirementMessage = "Password must be between 8 and 30 characters long, must include at least one letter, number and special character.";
+
+export const APIPATH = "/api/v1";

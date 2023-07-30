@@ -1,7 +1,7 @@
-import User from './user/User';
+import User from '../user/User';
 import { ObjectId } from 'mongodb';
 import {id, nested, ignore} from 'mongodb-typescript'
-import Database from '../Database';
+import Database from '../../classes/Database';
 
 export default class Party {
 

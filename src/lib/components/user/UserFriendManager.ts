@@ -1,4 +1,4 @@
-import Database from "../../Database";
+import Database from "../../classes/Database";
 import {ObjectId} from 'mongodb';
 
 

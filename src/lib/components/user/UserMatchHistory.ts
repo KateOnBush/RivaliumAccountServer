@@ -1,4 +1,4 @@
-import Database from "../../Database";
+import Database from "../../classes/Database";
 import Match from "../match/Match";
 
 export default class UserMatchHistory {

@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
-import Match from './components/match/Match';
-import User from './components/user/User';
+import Match from '../components/match/Match';
+import User from '../components/user/User';
 
 import { passwordSaltRounds, 
     usernameRegex, 
@@ -8,15 +8,18 @@ import { passwordSaltRounds,
     usernameRequirementMessage, 
     passwordRequirementMessage,
     databasePath 
-} from '../env.var'
+} from '../../env.var'
 
 import { MongoClient, ObjectId } from 'mongodb';
 import { Repository } from 'mongodb-typescript';
+import Version from "../types/Version";
+import IVersion from "../interfaces/IVersion";
 
 const uri = databasePath;
 const DatabaseClient = new MongoClient(uri);
 let UserRepository = new Repository<User>(User, DatabaseClient, "account", { databaseName: "epicgame" });
 let MatchRepository = new Repository<Match>(Match, DatabaseClient, "match", { databaseName: "epicgame" });
+let VersionRepository = new Repository<Version>(Version, DatabaseClient, "version", {databaseName: "epicgame"});
 
 export default class Database {
 
@@ -36,18 +39,25 @@ export default class Database {
         
     }
 
-    static async findUserId(name: string){
+    static async findUserByName(name: string){
 
         const query = { username: name };
         return await UserRepository.findOne(query);
 
     }
 
-    static async registerUser(name: string, password: string) {
+    static async findUserByMail(email: string) {
 
-        console.log(await this.findUserId(name))
+        const query = { email };
+        return await UserRepository.findOne(query);
 
-        if (await this.findUserId(name) != null) throw "Username already taken.";
+    }
+
+    static async registerUser(name: string, password: string, email: string, ) {
+
+        console.log(await this.findUserByName(name))
+
+        if (await this.findUserByName(name) != null) throw "Username already taken.";
 
         if (!name.match(usernameRegex)) throw usernameRequirementMessage;
 
@@ -80,7 +90,7 @@ export default class Database {
 
     static unexpectedErrorText(errorCode: string){
 
-        return `An unexpected error occured. (${errorCode})`;
+        return `An unexpected error occurred. (${errorCode})`;
     }
 
     static async saveUser(user: User) {
@@ -92,6 +102,12 @@ export default class Database {
     static async saveMatch(match: Match) {
 
         return await MatchRepository.save(match);
+
+    }
+
+    static async getVersion(){
+
+        return await VersionRepository.findOne({});
 
     }
 

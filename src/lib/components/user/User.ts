@@ -3,7 +3,7 @@ import UserMatchHistory from "./UserMatchHistory";
 import { ObjectId } from 'mongodb';
 import UserInventory from './UserInventory';
 import UserFriendManager from './UserFriendManager';
-import Database from '../../Database';
+import Database from '../../classes/Database';
 
 export default class User {
 
@@ -12,6 +12,7 @@ export default class User {
     inGame: boolean;
     username: string;
     password: string;
+    email: string;
     createdAt: number = Date.now();
 
     party?: string;
@@ -44,6 +45,17 @@ export default class User {
 
     getID(){
         return this.id.toString();
+    }
+
+    getData() {
+        return {
+            id: this.id.toString("hex"),
+            username: this.username,
+            email: this.email,
+            matchHistory: this.matchHistory,
+            inventory: this.inventory,
+            friendManager: this.friendManager
+        }
     }
 
 }

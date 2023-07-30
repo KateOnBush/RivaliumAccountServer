@@ -7,4 +7,6 @@ enum MatchType {
 
 }
 
+export type PlayerID = number;
+
 export default MatchType;
