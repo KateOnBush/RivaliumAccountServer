@@ -1,10 +1,11 @@
 import express from 'express';
-const api = express();
-import { APIPATH, apiPort as PORT } from './env.var';
+import {apiPath} from './env.var';
 import Database from './lib/classes/Database';
 import cors from 'cors';
 
-const userApiPath = APIPATH + "/:userId";
+const api = express();
+
+const userApiPath = apiPath + "/:userId";
 
 api.use(cors({
     origin: 'http://localhost:3000',
@@ -27,7 +28,7 @@ api.get(userApiPath + "/get", async (req, res)=>{
 
 })
 
-api.get(APIPATH + "/getAll", async (req, res)=>{
+api.get(apiPath + "/getAll", async (req, res)=>{
 
     res.send(await Database.getAll());
 

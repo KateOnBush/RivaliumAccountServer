@@ -1,4 +1,4 @@
-import ServerResponse from "../ServerResponse";
+import ServerResponse from "./ServerResponse";
 
 export default class ServerResponseInternalError extends ServerResponse {
 

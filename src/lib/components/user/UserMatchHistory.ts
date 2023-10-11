@@ -8,6 +8,7 @@ export default class UserMatchHistory {
     async getMatch(id: string) {
 
         if (this.matchList.includes(id)) return await Database.fetchMatch(id);
+        else return null;
 
     }
 
@@ -20,7 +21,7 @@ export default class UserMatchHistory {
     async getMatches(n: number){
 
         let res = [];
-        for(var l = 0; l < n; l++){
+        for(let l = 0; l < n; l++){
             res.push(await Database.fetchMatch(this.matchList[l]));
         }
         return res;

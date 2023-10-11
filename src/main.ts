@@ -1,28 +1,37 @@
+
+
+let beginTime = performance.now();
+
+import Logger from "./lib/tools/Logger";
 import api from "./api";
-import {apiPort, serverPort} from "./env.var";
+import {apiPort, LOGO, serverPort} from "./env.var";
 import server from "./server";
 import {WebSocket} from "ws";
-import Logger from "./lib/tools/Logger";
-
-const beginTime = Date.now();
+import Matchmaker from "./lib/classes/Matchmaker";
+import RequestProcessor from "./lib/networking/request/RequestProcessor";
+import Time from "./lib/tools/Time";
+import * as path from "path";
 
 api.listen(apiPort, ()=>{
 
-    console.log("API listening now.");
+});
 
-})
+server.on("listening", async (socket: WebSocket) => {
 
-server.on("listening", (socket: WebSocket) => {
-
-    console.log("\n" +
-        "░█████╗░░█████╗░░█████╗░░█████╗░██╗░░░██╗███╗░░██╗████████╗  ░██████╗███████╗██████╗░██╗░░░██╗███████╗██████╗░\n" +
-        "██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║░░░██║████╗░██║╚══██╔══╝  ██╔════╝██╔════╝██╔══██╗██║░░░██║██╔════╝██╔══██╗\n" +
-        "███████║██║░░╚═╝██║░░╚═╝██║░░██║██║░░░██║██╔██╗██║░░░██║░░░  ╚█████╗░█████╗░░██████╔╝╚██╗░██╔╝█████╗░░██████╔╝\n" +
-        "██╔══██║██║░░██╗██║░░██╗██║░░██║██║░░░██║██║╚████║░░░██║░░░  ░╚═══██╗██╔══╝░░██╔══██╗░╚████╔╝░██╔══╝░░██╔══██╗\n" +
-        "██║░░██║╚█████╔╝╚█████╔╝╚█████╔╝╚██████╔╝██║░╚███║░░░██║░░░  ██████╔╝███████╗██║░░██║░░╚██╔╝░░███████╗██║░░██║\n" +
-        "╚═╝░░╚═╝░╚════╝░░╚════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝░░░╚═╝░░░  ╚═════╝░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝");
+    const startTime = performance.now() - beginTime;
+    Logger.clear();
+    Logger.important("Registering request events...");
+    Logger.important(__filename);
+    await RequestProcessor.registerClasses(path.dirname(__filename) + "/lib/networking/request/events");
+    Logger.clearLine();
+    Logger.info("Account server starting...");
+    await Time.wait(1000);
+    Logger.clear();
+    Logger.important(LOGO);
     Logger.success("Account server started successfully.");
     Logger.info("Server running on port: {}", serverPort);
-    Logger.info("Server took {}ms to start", Date.now() - beginTime);
+    Logger.info("Server took {}ms to start", Math.round(startTime));
+
+    setInterval(() => Matchmaker.processQueues(), 150);
 
 })

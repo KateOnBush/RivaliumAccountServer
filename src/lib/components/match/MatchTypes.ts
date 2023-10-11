@@ -1,12 +1,28 @@
+export enum MatchType {
 
-enum MatchType {
-
-    NORMAL,
+    CASUAL,
     RANKED,
     EXCLUSIVE
 
 }
 
-export type PlayerID = number;
+export enum MatchState {
 
-export default MatchType;
+    AWAITING_INITIATION,
+    AWAITING_PLAYERS,
+    LOADING,
+    STARTED,
+    FINISHED
+
+}
+
+export enum PlayerLeaverDegree {
+
+    NOT_LEAVER,
+    LOWER_THAN_200MS,
+    HIGHER_THAN_200MS,
+    HIGHER_THAN_500MS
+
+}
+
+export type PlayerID = number;

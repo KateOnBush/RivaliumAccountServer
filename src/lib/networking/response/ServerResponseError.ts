@@ -1,6 +1,4 @@
-import ServerResponseOk from "./ServerResponseOk";
-import ServerMessage from "../../types/ServerMessage";
-import ServerResponse from "../ServerResponse";
+import ServerResponse from "./ServerResponse";
 
 export default class ServerResponseError extends ServerResponse {
 
