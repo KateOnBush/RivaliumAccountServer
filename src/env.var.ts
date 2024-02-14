@@ -4,7 +4,7 @@ export const LOGO = `
             Version 0.0
             █▀█ ▀█▀ █ █ ▄▀▄ █   ▀█▀ █ █ █▄ ▄█   
             █▀▄ ▄█▄ ▀▄▀ █▀█ █▄▄ ▄█▄ █▄█ █ ▀ █       
-                               Account Server
+                                 Account Server
                                
 `;
 
