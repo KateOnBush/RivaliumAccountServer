@@ -98,7 +98,7 @@ export default class Party {
 
     async removeUser(user: User){
 
-        if (this.users.includes(user.getID())) return;
+        if (!this.users.includes(user.getID())) return;
         this.users = this.users.filter(t=> t!=user.getID());
         if (this.getOwnerID() == user.getID()) {
             if (this.users.length == 0) {
@@ -156,7 +156,7 @@ export default class Party {
                 Logger.info("Party with owner {} joining queue {}", owner.username, queue.name);
             }
             queue.queue(this);
-        }, 10 * 1000);
+        }, 10); //10 * 1000
     }
 
     async leaveQueue() {

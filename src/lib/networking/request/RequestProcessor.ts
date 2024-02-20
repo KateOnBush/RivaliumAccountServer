@@ -33,7 +33,6 @@ export default class RequestProcessor {
                         Logger.clearLine();
                         Logger.log("Registering event {}", instanceClass.event);
                         this.registerEvent(instanceClass.event, instanceClass);
-                        await Time.wait(50);
                     }
                 }
             }
