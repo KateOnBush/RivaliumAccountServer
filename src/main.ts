@@ -1,3 +1,4 @@
+import Authenticator from "./lib/classes/Authenticator";
 
 
 let beginTime = performance.now();
@@ -31,6 +32,7 @@ server.on("listening", async (socket: WebSocket) => {
     Logger.success("Account server started successfully.");
     Logger.info("Server running on port: {}", serverPort);
     Logger.info("Server took {}ms to start", Math.round(startTime));
+    Authenticator.regenerateAndLogKeys();
 
     setInterval(() => Matchmaker.processQueues(), 150);
 
