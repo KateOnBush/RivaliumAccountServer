@@ -26,5 +26,5 @@ jobs:
           cd ~/production/account-server/
           git pull origin production
           git status
-          npm install --only=prod
+          npm install
           npm run start
