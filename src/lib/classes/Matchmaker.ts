@@ -9,7 +9,7 @@ import ResQueueMatchFound from "../networking/response/events/queue/ResQueueMatc
 
 export default class Matchmaker {
 
-    static casualQueue: Queue = new Queue("casual", 2, 2);
+    static casualQueue: Queue = new Queue("casual", 1, 1);
     static rankedQueue: Queue = new Queue("ranked");
 
     static queueCasual(party: Party) {

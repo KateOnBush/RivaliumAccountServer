@@ -14,7 +14,7 @@ export const usernameRegex = /^[A-Za-z_-]{5,16}$/;
 export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,30}$/;
 export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export const databasePath = "mongodb://127.0.0.1:27017";
+export const databasePath = `mongodb://production-server:${process.env["DATABASE_PASSWORD"]}@127.0.0.1:27017/?authMechanism=DEFAULT`;
 
 export const serverPort = 1840;
 export const apiPort = 8080;
