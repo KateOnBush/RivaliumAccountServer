@@ -10,17 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: account-server-im:latest
-
-      - name: SSH into server and restart container
+      - name: SSH Deployment
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
