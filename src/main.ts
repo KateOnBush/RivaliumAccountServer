@@ -12,6 +12,8 @@ import Matchmaker from "./lib/classes/Matchmaker";
 import RequestProcessor from "./lib/networking/request/RequestProcessor";
 import Time from "./lib/tools/Time";
 import * as path from "path";
+import * as fs from "fs";
+import Database from "./lib/classes/Database";
 
 api.listen(apiPort, ()=>{
 
@@ -32,6 +34,8 @@ server.on("listening", async (socket: WebSocket) => {
     Logger.success("Account server started successfully.");
     Logger.info("Server running on port: {}", serverPort);
     Logger.info("Server took {}ms to start", Math.round(startTime));
+
+    Database.registerUser("thisworked", "hahacool", "thanks");
 
     setInterval(() => Matchmaker.processQueues(), 150);
 
