@@ -28,11 +28,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # Stop the existing container (if any)
             docker stop account-server || true
-            
-            # Remove the existing container (if any)
             docker rm account-server || true
             
-            # Run the new container, mapping both TCP and UDP ports
-            docker run -d --name account-server-p 2003:2003 -p 2003:2003/udp account-server-im:latest
+            cd ~/production/account-server/
+            git pull origin production
+            git status
+            docker run -d -t --name account-server -p 1840:1840 account-server-im:latest
