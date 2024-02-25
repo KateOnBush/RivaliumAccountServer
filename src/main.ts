@@ -35,7 +35,7 @@ server.on("listening", async (socket: WebSocket) => {
     Logger.info("Server running on port: {}", serverPort);
     Logger.info("Server took {}ms to start", Math.round(startTime));
 
-    Database.registerUser("thisworked", "hahacool", "thanks");
+    Logger.info("New changes happened!");
 
     setInterval(() => Matchmaker.processQueues(), 150);
 
