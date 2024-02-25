@@ -24,4 +24,4 @@ jobs:
             cd ~/production/account-server/
             git pull origin production
             git status
-            docker run -d -ti --name account-server -p 1840:1840 account-server-im:latest
+            docker run -d -ti --name account-server -p 1840:1840 -v $(pwd):/app account-server-im:latest
