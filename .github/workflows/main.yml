@@ -18,22 +18,15 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            docker stop account-server || true
-            docker rm account-server || true
+            pm2 stop AccountServer || true
             
             cd ~/production/account-server/
-            
-            cp package.json package.json.tmp
-            cp package-lock.json package-lock.json.tmp
             
             git pull origin production
             git status
             
-            if ! cmp -s package.json package.json.tmp || ! cmp -s package-lock.json package-lock.json.tmp; then
-              docker build -t account-server-im .
-            fi
+            npm install
             
-            rm package.json.tmp
-            rm package-lock.json.tmp
+            mkdir -p ./logs
             
-            docker run -d -ti --name account-server -p 1840:1840 -v $(pwd):/app account-server-im:latest
+            pm2 start npm -- start:production --name "AccountServer" --log ./logs/myApp-%YYYY-MM-DD%.log
