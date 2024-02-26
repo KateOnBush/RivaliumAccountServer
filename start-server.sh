@@ -1,2 +1,5 @@
-npm run install
+#!/bin/sh
+
+npm install
+
 npm run start:production
