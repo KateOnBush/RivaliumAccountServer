@@ -1,7 +1,11 @@
-FROM busybox
+FROM node:18.18
 
-COPY start-server.sh /
+WORKDIR /app
 
-RUN chmod +x /start-server.sh
+COPY package*.json ./
 
-ENTRYPOINT ["/start-server.sh"]
+RUN npm install
+
+EXPOSE 1840/tcp
+
+CMD ["npm", "start:production"]

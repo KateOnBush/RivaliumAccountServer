@@ -22,6 +22,18 @@ jobs:
             docker rm account-server || true
             
             cd ~/production/account-server/
+            
+            cp package.json package.json.tmp
+            cp package-lock.json package-lock.json.tmp
+            
             git pull origin production
             git status
+            
+            if ! cmp -s package.json package.json.tmp || ! cmp -s package-lock.json package-lock.json.tmp; then
+              docker build -t account-server-im .
+            fi
+            
+            rm package.json.tmp
+            rm package-lock.json.tmp
+            
             docker run -d -ti --name account-server -p 1840:1840 -v $(pwd):/app account-server-im:latest
