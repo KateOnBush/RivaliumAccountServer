@@ -1,7 +1,7 @@
-FROM node:18.18
+FROM scratch
 
-WORKDIR /app
+COPY start-server.sh /
 
-EXPOSE 1840/tcp
+RUN chmod +x /start-server.sh
 
-CMD npm run start:production
+ENTRYPOINT ["/start-server.sh"]
