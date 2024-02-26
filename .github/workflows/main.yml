@@ -18,16 +18,23 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            export NVM_DIR="~/.nvm/versions/node/v18.18.0/bin"
-            $NVM_DIR/pm2 stop AccountServer || true
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+            export PM2_HOME="$HOME/.pm2"
+            export PATH="$PM2_HOME/bin:$PATH"
+            
+            nvm use 18.18
+            
+            pm2 stop AccountServer || true
             
             cd ~/production/account-server/
             
             git pull origin production
             git status
             
-            $NVM_DIR/npm install
+            npm install
             
             mkdir -p ./logs
             
-            ~$NVM_DIR/pm2 start npm -- start:production --name "AccountServer" --log ./logs/myApp-%YYYY-MM-DD%.log
+            pm2 start npm -- start:production --name "AccountServer" --log ./logs/myApp-%YYYY-MM-DD%.log
