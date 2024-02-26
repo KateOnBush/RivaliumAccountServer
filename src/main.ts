@@ -35,8 +35,6 @@ server.on("listening", async (socket: WebSocket) => {
     Logger.info("Server running on port: {}", serverPort);
     Logger.info("Server took {}ms to start", Math.round(startTime));
 
-    Logger.success("Another change happened!");
-
     setInterval(() => Matchmaker.processQueues(), 150);
 
 })

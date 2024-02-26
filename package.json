@@ -19,6 +19,7 @@
     "start:dev": "npx nodemon",
     "compile": "rimraf ./build && tsc",
     "start": "npm run compile && node build/main.js",
+    "start:production": "npm install && npm run compile && node build/main.js mode:production",
     "build": "npm run compile && pkg ."
   },
   "pkg": {
