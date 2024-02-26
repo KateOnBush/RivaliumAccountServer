@@ -8,4 +8,4 @@ RUN npm install
 
 EXPOSE 1840/tcp
 
-CMD ["npm", "start:production"]
+CMD ["npm", "run", "start:production"]
