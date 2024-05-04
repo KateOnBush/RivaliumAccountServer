@@ -82,6 +82,13 @@ export default class Matchmaker {
                     matchPlayer.playerId = Math.floor(Math.random() * 10000);
                 }
                 ids.push(matchPlayer.playerId);
+            }
+        }
+
+        for(const team of match.playerManager.players) {
+            for (const matchPlayer of team) {
+                let user = await Database.fetchUser(matchPlayer.userId);
+                if (!user) continue;
                 matchPlayer.charId = user.wardrobe.selectedChar;
                 await user.send(new ResQueueMatchFound(match, matchPlayer.access, true));
                 user.inGame = true;

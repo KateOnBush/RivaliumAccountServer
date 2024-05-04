@@ -37,4 +37,4 @@ jobs:
             
             mkdir -p ./logs
             
-            pm2 start --name AccountServer npm -- run start:production --log ./logs/myApp-%YYYY-MM-DD%.log
+            pm2 start --name AccountServer --log ./logs/%YYYY-MM-DD%.log npm -- run start:production

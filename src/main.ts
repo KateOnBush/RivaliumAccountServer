@@ -12,8 +12,6 @@ import Matchmaker from "./lib/classes/Matchmaker";
 import RequestProcessor from "./lib/networking/request/RequestProcessor";
 import Time from "./lib/tools/Time";
 import * as path from "path";
-import * as fs from "fs";
-import Database from "./lib/classes/Database";
 
 api.listen(apiPort, ()=>{
 

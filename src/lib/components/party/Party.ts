@@ -156,7 +156,7 @@ export default class Party {
                 Logger.info("Party with owner {} joining queue {}", owner.username, queue.name);
             }
             queue.queue(this);
-        }, 10 * 1000); //10 * 1000
+        }, 10); //10 * 1000
     }
 
     async leaveQueue() {

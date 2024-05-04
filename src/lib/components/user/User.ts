@@ -54,6 +54,7 @@ export default class User {
     }
 
     async disconnect(){
+        if (!this.connected) return;
         this.connected = false;
         await this.getParty().removeUser(this);
         this.session?.clearHeartbeat();
