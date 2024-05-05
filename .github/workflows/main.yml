@@ -27,7 +27,7 @@ jobs:
             nvm use 18.18
             
             pm2 stop AccountServer || true
-            pm2 remove AccountServer || true
+            pm2 delete AccountServer || true
             
             cd ~/production/account-server/
             
