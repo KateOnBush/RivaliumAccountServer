@@ -1,5 +1,5 @@
 import Database from "../../classes/Database";
-import {ObjectId} from 'mongodb';
+import User from "./User";
 
 
 export default class UserFriendManager {
@@ -10,7 +10,7 @@ export default class UserFriendManager {
     
     async getFriendList(){
 
-        let res = [];
+        let res: User[] = [];
         for(let friendID of this.friendList){
             const u = await Database.fetchUser(friendID);
             if (u) res.push(u);

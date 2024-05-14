@@ -1,13 +1,10 @@
 import User from '../user/User';
 import Database from '../../classes/Database';
 import PartyManager from "../../classes/PartyManager";
-import ResUpdateParty from "../../networking/response/events/update/ResUpdateParty";
 import Queue from "../queue/Queue";
 import Logger from "../../tools/Logger";
-import ResPartyDisconnect from "../../networking/response/events/party/ResPartyDisconnect";
 import ResPartyJoin from "../../networking/response/events/party/ResPartyJoin";
-import ResPartyJoinQueue from "../../networking/response/events/party/ResPartyJoinQueue";
-import ResPartyLeaveQueue from "../../networking/response/events/party/ResPartyLeaveQueue";
+import ResUpdateUserSelf from "../../networking/response/events/update/ResUpdateUserSelf";
 
 export default class Party {
 
@@ -88,10 +85,11 @@ export default class Party {
 
         if (!this.users.includes(user.getID())) {
             this.users.push(user.getID());
-            const users = await this.getUsers();
+            const users = (await this.getUsers()).filter(other => other.getID() != user.getID());
             for(const otherUser of users) {
-                await otherUser.send(new ResPartyJoin(user, this));
+                await otherUser.send(new ResPartyJoin(user));
             }
+            await this.update();
         }
 
     }
@@ -107,12 +105,10 @@ export default class Party {
             else this.setOwnerID(this.users[0]);
         }
 
-        let users = await this.getUsers();
-        for(const otherUser of users) {
-            await otherUser.send(new ResPartyDisconnect(user, this));
-        }
-
         if (this.inQueue) await this.leaveQueue();
+        await this.update();
+        user.party = await PartyManager.generate(user);
+        await user.send(new ResUpdateUserSelf(user));
 
     }
 
@@ -120,7 +116,7 @@ export default class Party {
 
         let users = await this.getUsers();
         for(let user of users){
-            await user.send(new ResUpdateParty(this));
+            await user.send(new ResUpdateUserSelf(user));
         }
 
     }
@@ -146,10 +142,7 @@ export default class Party {
     async joinQueue(queue: Queue) {
         this.clearJoinQueueTimeout();
         this.joinedQueue = queue;
-        const users = await this.getUsers();
-        for(const user of users) {
-            await user.send(new ResPartyJoinQueue(queue.name));
-        }
+        await this.update();
         this.joinQueueTimeout = setTimeout(async () => {
             let owner = await this.getOwner();
             if (owner) {
@@ -160,13 +153,10 @@ export default class Party {
     }
 
     async leaveQueue() {
-        const users = await this.getUsers();
-        for(const user of users) {
-            await user.send(new ResPartyLeaveQueue());
-        }
         this.clearJoinQueueTimeout();
         this.joinedQueue?.leave(this);
         this.joinedQueue = null;
+        await this.update();
     }
 
 }

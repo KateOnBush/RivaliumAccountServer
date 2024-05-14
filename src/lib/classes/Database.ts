@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs'
 import Match from '../components/match/Match';
 import User from '../components/user/User';
-import Logger from "../tools/Logger";
 
 import {databasePath, passwordSaltRounds} from '../../env.var'
 
@@ -40,6 +39,16 @@ export default class Database {
             return fetched;
         }
         
+    }
+
+    static async searchForUser(query: string) {
+        const regex = new RegExp(query, 'i');
+        const filter = {username: regex}
+        const result = await UserRepository.find(filter).toArray();
+        for(let user of result) {
+            await this.saveUser(user);
+        }
+        return result;
     }
 
     static async fetchMatch(id: string){

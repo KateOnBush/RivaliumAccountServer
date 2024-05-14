@@ -3,7 +3,6 @@ import UserSession from "../../../../components/user/UserSession";
 import Message from "../../../../types/Message";
 import ServerResponseOk from "../../../response/ServerResponseOk";
 import ServerResponseError from "../../../response/ServerResponseError";
-import Authenticator from "../../../../classes/Authenticator";
 import Database from "../../../../classes/Database";
 
 export default class ReqFriendAdd extends RequestEvent {
@@ -32,6 +31,8 @@ export default class ReqFriendAdd extends RequestEvent {
         ) {
             return new ServerResponseError(this.event, "no.request");
         } else {
+            friendToAccept.friendManager.sentFriendRequests = friendToAccept.friendManager.sentFriendRequests.filter(request => request != thisUserID);
+            thisUser.friendManager.receivedFriendRequests = thisUser.friendManager.receivedFriendRequests.filter(request => request != friendToAcceptID);
             if (!friendToAccept.friendManager.friendList.includes(thisUserID)) friendToAccept.friendManager.friendList.push(thisUserID);
             if (!thisUser.friendManager.friendList.includes(friendToAcceptID)) thisUser.friendManager.friendList.push(friendToAcceptID);
         }

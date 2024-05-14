@@ -17,7 +17,7 @@ export default class ReqPartyLeaveQueue extends RequestEvent {
         if (party.getOwnerID() != user.getID()) return new ServerResponseError(this.event, "not.owner");
         if (!party.inQueue) return new ServerResponseError(this.event, "not.in.queue");
 
-        party.leaveQueue();
+        await party.leaveQueue();
 
         (await party.getUsers()).forEach(user => {
             user.send(new ResUpdateUserSelf(user));

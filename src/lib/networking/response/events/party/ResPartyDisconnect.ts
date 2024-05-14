@@ -5,8 +5,7 @@ import User from "../../../../components/user/User";
 export default class ResPartyDisconnect extends Message {
     constructor(user: User, newParty: Party) {
         super("party.disconnect", {
-            user: user.getID(),
-            party: newParty.getData()
+            user: {id: user.getID(), username: user.username}
         });
     }
 

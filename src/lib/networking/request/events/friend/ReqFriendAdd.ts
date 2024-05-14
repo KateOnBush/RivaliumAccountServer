@@ -3,8 +3,8 @@ import UserSession from "../../../../components/user/UserSession";
 import Message from "../../../../types/Message";
 import ServerResponseOk from "../../../response/ServerResponseOk";
 import ServerResponseError from "../../../response/ServerResponseError";
-import Authenticator from "../../../../classes/Authenticator";
 import Database from "../../../../classes/Database";
+import ResFriendAdd from "../../../response/events/friend/ResFriendAdd";
 
 export default class ReqFriendAdd extends RequestEvent {
 
@@ -38,6 +38,10 @@ export default class ReqFriendAdd extends RequestEvent {
 
         await thisUser.save();
         await friendToAdd.save();
+
+        if (friendToAdd.connected) {
+            await friendToAdd.send(new ResFriendAdd(thisUser));
+        }
 
         return new ServerResponseOk(this.event);
 

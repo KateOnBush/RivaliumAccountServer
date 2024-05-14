@@ -9,7 +9,7 @@ export default class PartyManager {
     static async generate(owner: User) {
         let party = new Party();
         party.setOwnerID(owner.getID());
-        await party.addUser(owner);
+        party.users = [owner.getID()];
         this.register(party);
         return party.id;
     }
