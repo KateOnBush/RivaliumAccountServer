@@ -6,6 +6,7 @@ export default class UserInventory {
     ropes: number[] = [0];
     characters: number[] = [ECharacter.KENN];
     icons: number[] = [0];
+    borders: number[] = [0];
     podiums: number[] = [0];
 
     addSkin(id: number){

@@ -4,7 +4,6 @@ import UserSession from "../../../../components/user/UserSession";
 import ServerResponseOk from "../../../response/ServerResponseOk";
 import ServerResponseError from "../../../response/ServerResponseError";
 import Matchmaker from "../../../../classes/Matchmaker";
-import ResUpdateUserSelf from "../../../response/events/update/ResUpdateUserSelf";
 
 export default class ReqPartyJoinQueue extends RequestEvent {
 
@@ -22,10 +21,6 @@ export default class ReqPartyJoinQueue extends RequestEvent {
         else if (content.queue == "ranked") {
             return new ServerResponseError(this.event, "no");
         }
-
-        (await party.getUsers()).forEach(user => {
-            user.send(new ResUpdateUserSelf(user));
-        });
 
         return new ServerResponseOk(this.event);
 

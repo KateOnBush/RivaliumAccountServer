@@ -1,8 +1,3 @@
-import Authenticator from "./lib/classes/Authenticator";
-
-
-let beginTime = performance.now();
-
 import Logger from "./lib/tools/Logger";
 import api from "./api";
 import {apiPort, LOGO, serverPort} from "./env.var";
@@ -12,6 +7,9 @@ import Matchmaker from "./lib/classes/Matchmaker";
 import RequestProcessor from "./lib/networking/request/RequestProcessor";
 import Time from "./lib/tools/Time";
 import * as path from "path";
+
+
+let beginTime = performance.now();
 
 api.listen(apiPort, ()=>{
 

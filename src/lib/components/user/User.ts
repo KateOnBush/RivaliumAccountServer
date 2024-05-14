@@ -1,4 +1,4 @@
-import {id, ignore} from 'mongodb-typescript'
+import {id, ignore, nested} from 'mongodb-typescript'
 import UserMatchHistory from "./UserMatchHistory";
 import {ObjectId} from 'mongodb';
 import UserInventory from './UserInventory';
@@ -12,6 +12,8 @@ import UserRank from "./UserRank";
 import UserWardrobe from "./UserWardrobe";
 import UserCurrency from "./UserCurrency";
 import Logger from "../../tools/Logger";
+import ResUpdateUser from "../../networking/response/events/update/ResUpdateUser";
+import ResUpdateUserSelf from "../../networking/response/events/update/ResUpdateUserSelf";
 
 export default class User {
 
@@ -28,13 +30,19 @@ export default class User {
     @ignore
     party: string = "";
 
-    //@nested(()=>UserMatchHistory)
+    @nested(()=>UserMatchHistory)
     matchHistory: UserMatchHistory = new UserMatchHistory();
+    @nested(()=>UserInventory)
     inventory: UserInventory = new UserInventory();
+    @nested(()=>UserFriendManager)
     friendManager: UserFriendManager = new UserFriendManager();
+    @nested(()=>UserWardrobe)
     wardrobe: UserWardrobe = new UserWardrobe();
+    @nested(()=>UserSkill)
     skill: UserSkill = new UserSkill();
+    @nested(()=>UserRank)
     rank: UserRank = new UserRank();
+    @nested(()=>UserCurrency)
     currency: UserCurrency = new UserCurrency();
 
     @ignore
@@ -44,6 +52,20 @@ export default class User {
     currentGameId: string;
 
     async save(){
+        const friends = await this.friendManager.getFriendList();
+        for (const friend of friends) {
+            if (friend.connected) await friend.send(new ResUpdateUser(this));
+        }
+        if (this.connected) {
+            const party = this.getParty();
+            const partyUsers = await party.getUsers();
+            for (const user of partyUsers) {
+                if (user.getID() != this.getID()) await user.send(new ResUpdateUser(this));
+            }
+        }
+        if (this.connected) {
+            await this.send(new ResUpdateUserSelf(this));
+        }
         await Database.saveUser(this);
     }
 
@@ -56,7 +78,8 @@ export default class User {
     async disconnect(){
         if (!this.connected) return;
         this.connected = false;
-        await this.getParty().removeUser(this);
+        let party = this.getParty();
+        await party.removeUser(this);
         this.session?.clearHeartbeat();
         await this.save();
     }
@@ -69,6 +92,7 @@ export default class User {
         return PartyManager.get(this.party);
     }
 
+
     getLimitedData() {
         return {
             id: this.getID(),
@@ -76,7 +100,8 @@ export default class User {
             skill: this.skill,
             rank: this.rank,
             wardrobe: this.wardrobe,
-            party: this.party
+            party: this.party,
+            connected: this.connected
         }
     }
 
